@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Illness Checker</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+        }
+        #chat-container {
+            width: 80%;
+            max-width: 600px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            overflow-y: auto;
+            height: 400px;
+            margin-bottom: 20px;
+        }
+        #user-input-container {
+            display: flex;
+            width: 100%;
+        }
+        #user-input {
+            width: 80%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        #send-btn {
+            padding: 10px;
+            margin-left: 10px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        #send-btn:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <h1>Dog Illness Checker</h1>
+    <div id="chat-container"></div>
+    <div id="user-input-container">
+        <input type="text" id="user-input" placeholder="Type your message..." />
+        <button id="send-btn">Send</button>
+    </div>
+
+    <script>
+        const sendButton = document.getElementById('send-btn');
+        const userInput = document.getElementById('user-input');
+        const chatContainer = document.getElementById('chat-container');
+
+        // Send user message and display response
+        async function sendMessage() {
+            const userMessage = userInput.value;
+            if (!userMessage) return;
+
+            // Append user's message to the chat
+            chatContainer.innerHTML += `<div><strong>You:</strong> ${userMessage}</div>`;
+            userInput.value = ''; // Clear input field
+
+            // Send message to backend and display response
+            const response = await fetch('http://127.0.0.1:5000/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+
+            const data = await response.json();
+
+            if (data.response) {
+                chatContainer.innerHTML += `<div><strong>Chatbot:</strong> ${data.response}</div>`;
+            } else if (data.error) {
+                chatContainer.innerHTML += `<div><strong>Error:</strong> ${data.error}</div>`;
+            }
+
+            // Scroll to the bottom of the chat container
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        }
+
+        // Event listener for sending message
+        sendButton.addEventListener('click', sendMessage);
+
+        // Optional: Press 'Enter' to send the message
+        userInput.addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+    </script>
+</body>
+</html>
