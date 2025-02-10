@@ -1,58 +1,66 @@
-
 from flask import Flask, request, jsonify
-import requests
-import json
 from flask_cors import CORS
+from cohere import Client
 
-# Initialize Flask app
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Define the Cohere API endpoint and your API key
-api_key = 'tvIZ363Cg95OtTsniNW9YoglrZ6ApbdHwpalpsdT'  # Replace with your actual Cohere API key
-url = "https://api.cohere.ai/v1/generate"
+# Initialize Cohere Client
+co = Client('tvIZ363Cg95OtTsniNW9YoglrZ6ApbdHwpalpsdT')
 
-def chat_with_cohere(prompt):
-    headers = {
-        "Content-Type": "application/json",
-        "Authorization": f"Bearer {api_key}"  # Use the correct API key here
-    }
+# Cohere Model ID
+MODEL_ID = 'dfacfb8c-31d8-49e5-a3f7-b5eeb6e32ad3-ft'
 
-    data = {
-        "prompt": prompt,
-        "max_tokens": 300,  # Adjust the token limit as needed
-    }
+# Store conversation context
+user_context = {}
 
+def classify_text(question):
     try:
-        # Send the request to Cohere API
-        response = requests.post(url, headers=headers, json=data)
-        response.raise_for_status()  # Will raise an HTTPError for bad responses
-        
-        # If the response is successful, extract and return the response
-        response_data = response.json()
-        print("Response Data:", json.dumps(response_data, indent=2))  # For debugging
-
-        # Extract the correct response text from the 'generations' field
-        return response_data['generations'][0]['text']  # Adjusted to the correct field
-
-    except requests.exceptions.RequestException as e:
-        # Handle errors and return a message
-        print(f"Request failed: {e}")
-        return f"Request failed: {e}"
-
-@app.route('/chat', methods=['POST'])
-def chat():
-    try:
-        # Get the user's message from the request
-        user_message = request.json.get('message', '')
-
-        # Call the function to get the Cohere API response
-        response_message = chat_with_cohere(user_message)
-
-        # Return the response back to the frontend
-        return jsonify({'response': response_message})
+        response = co.classify(model=MODEL_ID, inputs=[question])
+        return response.classifications[0].prediction
     except Exception as e:
-        return jsonify({'error': str(e)})
+        print(f"Classification Error: {e}")
+        return None
 
-if __name__ == '__main__':
+def ask_chatbot(user_id, question):
+    category = classify_text(question)
+
+    # Allow general greetings and polite responses
+    greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"]
+    polite_responses = ["thank you", "thanks", "alright", "okay"]
+
+    if any(word in question.lower() for word in greetings):
+        return "Hello! How can I assist you with your dog's concerns?"
+    elif any(word in question.lower() for word in polite_responses):
+        return "You're welcome! Let me know if you need any help with your dog."
+    
+    # Restrict to dog-related topics
+    if category != "Dog-Related":
+        return "I can only assist with dog issues/concerns."
+    
+    if user_id not in user_context:
+        user_context[user_id] = []
+    
+    user_context[user_id].append(question)
+    
+    try:
+        response = co.chat(model='command', message=question)
+        return response.text.strip().replace("**", "")
+    except Exception as e:
+        print(f"Chatbot API Error: {e}")
+        return "I'm sorry, but I couldn't process your request right now."
+
+@app.route("/chat", methods=["POST"])
+def chat():
+    data = request.get_json()
+    user_message = data.get("message", "").strip()
+    user_id = data.get("user_id", "default")
+    
+    if not user_message:
+        return jsonify({"response": "Please enter a valid message."})
+    
+    chatbot_response = ask_chatbot(user_id, user_message)
+    return jsonify({"response": chatbot_response})
+
+if __name__ == "__main__":
     app.run(debug=True)
