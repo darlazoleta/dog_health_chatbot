@@ -5,11 +5,11 @@ from cohere import Client
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-# Initialize Cohere Client
+# Initialize Cohere Client with your API key
 co = Client('tvIZ363Cg95OtTsniNW9YoglrZ6ApbdHwpalpsdT')
 
-# Cohere Model ID
-MODEL_ID = 'dfacfb8c-31d8-49e5-a3f7-b5eeb6e32ad3-ft'
+# New Cohere Model ID
+MODEL_ID = 'a49b62f0-3c51-47a0-bda7-aa26df546bfb-ft'
 
 # Store conversation context
 user_context = {}
@@ -27,22 +27,22 @@ def ask_chatbot(user_id, question):
 
     # Allow general greetings and polite responses
     greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"]
-    polite_responses = ["thank you", "thanks", "alright", "okay"]
+    polite_responses = ["thank you", "thanks"]
 
     if any(word in question.lower() for word in greetings):
         return "Hello! How can I assist you with your dog's concerns?"
     elif any(word in question.lower() for word in polite_responses):
         return "You're welcome! Let me know if you need any help with your dog."
     
-    # Restrict to dog-related topics
-    if category != "Dog-Related":
-        return "I can only assist with dog issues/concerns."
-    
+    # Restrict to dog-related topics based on classification
+    if category != "dog topic":
+        return "I can only assist with dog-related topics."
+
     if user_id not in user_context:
         user_context[user_id] = []
     
     user_context[user_id].append(question)
-    
+
     try:
         response = co.chat(model='command', message=question)
         return response.text.strip().replace("**", "")
