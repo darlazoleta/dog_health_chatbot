@@ -4,69 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dog Chatbot</title>
-    <style>
-        #chat-log {
-            border: 1px solid #ccc;
-            width: 400px;
-            height: 300px;
-            overflow-y: scroll;
-            padding: 10px;
-        }
-        #user-input {
-            width: 100%;
-            padding: 10px;
-            margin-top: 10px;
-        }
-    </style>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div id="chat-log"></div>
-    <input type="text" id="user-input" placeholder="Ask about your dog..." />
-    <button onclick="sendMessage()">Send</button>
+    <div class="container">
+        <div id="chat-log"></div>
+        
+        <div class="input">
+            <!-- <input type="text" id="user-input" placeholder="Ask about your dog..." /> -->
+            <textarea id="user-input" placeholder="Ask about your dog..."></textarea>
+            
+            <button class="button" onclick="sendMessage()">Send</button>
+        </div>
 
-    <script>
-        async function sendMessage() {
-            var userInput = document.getElementById("user-input").value.trim();
-
-            if (userInput === "") {
-                alert("Please enter a message.");
-                return;
-            }
-
-            var chatLog = document.getElementById("chat-log");
-            chatLog.innerHTML += `<p><strong>You:</strong> ${userInput}</p>`;
-
-            document.getElementById("user-input").value = "";
-
-            try {
-                let response = await fetch("http://127.0.0.1:5000/chat", {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
-                    body: JSON.stringify({ message: userInput })
-                });
-
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-
-                let data = await response.json();
-                let botResponse = data.response || "Sorry, an error occurred.";
-                
-                chatLog.innerHTML += `<p><strong>Chatbot:</strong> ${botResponse}</p>`;
-                chatLog.scrollTop = chatLog.scrollHeight;
-            } catch (error) {
-                console.error("Error in fetching data:", error);
-                chatLog.innerHTML += "<p><strong>Chatbot:</strong> Sorry, an error occurred.</p>";
-            }
-        }
-
-        document.getElementById("user-input").addEventListener("keypress", function(event) {
-            if (event.key === "Enter") {
-                sendMessage();
-            }
-        });
-    </script>
+        <script src="model.js"></script>
+        <script src="textarea.js"></script>
+    </div>
 </body>
 </html>
