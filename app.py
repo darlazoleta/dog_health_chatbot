@@ -35,7 +35,7 @@ def ask_chatbot(user_id, question):
         return "You're welcome! Let me know if you need any help with your dog."
     
     # Restrict to dog-related topics
-    if category != "Dog-Related":
+    if category != "dog topic":
         return "I can only assist with dog issues/concerns."
     
     if user_id not in user_context:
