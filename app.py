@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
 # Initialize Cohere Client
-co = Client('tvIZ363Cg95OtTsniNW9YoglrZ6ApbdHwpalpsdT')
+co = Client('IMkbSoANcmONhqF7zhDhqr2LUlCdDxBnkLZbznyz')
 
 # Cohere Model ID
 MODEL_ID = 'dfacfb8c-31d8-49e5-a3f7-b5eeb6e32ad3-ft'
