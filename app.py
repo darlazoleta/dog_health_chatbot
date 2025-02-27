@@ -9,7 +9,7 @@ CORS(app)  # Enable CORS for all routes
 co = Client('IMkbSoANcmONhqF7zhDhqr2LUlCdDxBnkLZbznyz')
 
 # Cohere Model ID
-MODEL_ID = 'dfacfb8c-31d8-49e5-a3f7-b5eeb6e32ad3-ft'
+MODEL_ID = '126d7bb8-059e-449b-a041-e8c4877fd9bd-ft'
 
 # Store conversation context
 user_context = {}
