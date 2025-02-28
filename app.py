@@ -33,7 +33,7 @@ def ask_chatbot(user_id, question):
     category = classify_text(question)
     
     greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"]
-    polite_responses = ["thank you", "thanks", "alright", "okay"]
+    polite_responses = ["thank you", "thanks", "alright"]
     
     if any(word in question.lower() for word in greetings):
         return "Hello! How can I assist you with your dog's concerns?"
