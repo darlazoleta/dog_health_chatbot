@@ -1,88 +1,295 @@
-*{
+body {
+    scroll-behavior: smooth;
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-    font-family:Poppins;
-   
+    background-color: #f8f9ff;
 }
 
-body{
-    min-height: 100vh;
-    width: 100%;
-    background: 
-    radial-gradient(
-    #A7D477 40%, 
-    #E4F1AC
-    );
-}
-
-.container {
-    min-height: 100vh;
-    width: 90%;
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin: auto;
-    gap: 1em;
-}
-
-.zero {
+section {
+    height: 100vh;
+    padding: 50px;
     display: flex;
     justify-content: center;
-    height: 10vh;
     align-items: center;
-    background: #F72C5B;
-    /* border-width: 5px; */
-    /* border: 1px solid red; */
-    border-radius: 0% 0% 15% 15%;
+    text-align: center;
+    color: #242424;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative;
 }
 
-img {
-    height: 300%;
-    position:relative;
-    bottom: 15px;
+/* Landing Section */
+#landing {
+    background-image: url('img/bg1.png');
+    background-position: center, center;
+    background-size: cover 100%;
+    background-repeat: no-repeat, no-repeat;
+    position: relative;
 }
 
-.input {
-    align-items: center;
-    width: 100%;
+#landing h1 {
+    font-family: 'Montserrat';
+    font-size: 48px;
+    font-weight: 900;
+    margin-bottom: -40px;
+    color: #4b0082;
+}
+
+#landing p {
+    font-size: 24px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+/* Navigation Bar */
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 93.3%;
+    background: #5535c8;
+    border-radius: 0 0px 30px 30px;
+    padding: 5px 50px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
     display: flex;
-    flex-direction: row;
+    align-items: center;
     justify-content: space-between;
 }
 
-#chat-log {
-    border: 1px solid darkslategray;
+nav a {
+    margin: 0 25px;
+    text-decoration: none;
+    color: #f3f6fa;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    text-transform: uppercase;
+    transition: color 0.3s ease;
+    display: flex;
+}
+
+nav a:hover {
+    color: #ffc436;
+    font-weight: bolder;
+}
+
+.nav-container {
+    display: flex;
+    align-items: center;
     width: 100%;
-    height: 500px;
-    overflow-y: scroll;
-    resize: none;
-    background-color: #fd698c;
-    padding: 2em;
-    text-align: justify;
-    border-radius: 2em 0em 0em 2em;
-    box-shadow: 5px 5px 2px 2px grey;
+    justify-content: space-between;
 }
 
-textarea {
-    flex-wrap: wrap;
-    width: 87%;
-    min-height: 10vh;
-    max-height: 20vh;
-    padding: 10px;
+.nav-links {
+    display: flex;
+    margin-right: 175px;
+}
+
+nav img {
+    width: 50px;
+    height: auto;
+    margin-left: 175px;
+}
+
+/* Button Styling */
+.chat-btn {
+    background: #ffc436;
+    color: white;
+    padding: 12px 25px;
+    font-size: 18px;
+    font-weight: 900;
+    border: none;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+    margin-top: 50px;
+    margin-bottom: 100px;
+
+}
+
+.chat-btn:hover {
+    background: #8263ff;
+}
+
+.chat-btn img {
+    width: 20px;
+    margin-bottom: -3px;
+}
+
+/* Other Sections */
+
+#about {
+    background-color: #ffc436;
+    background-image: url('img/bg2.png');
+    display: block;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+}
+
+.about-container {
+    display: block;
+    align-items: center;
+    max-width: 1000px;
+    padding-left: 225px;
+}
+
+.about-logo img {
+    width: 400px;
+    height: auto;
+    margin-top: 100px;
+    margin-bottom: -50px;
+
+}
+
+.about-text p {
+    font-family: 'Montserrat';
+    font-size: 24px;
+    font-weight: bolder;
+    color: #202443;
+    font-style: italic;
+    font-weight: bold;
+}
+
+#chat {
+    background-image: url('img/bg3.png');
+    padding: 60px;
+    text-align: center;
+    align-content: center;
+    min-height: 100vh;
+}
+
+.chat-container {
+    width: 80%;
+    max-width: 1500px;
+    margin: auto;
+    background: #d7d5ff;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 90px;
+}
+
+.chat-header {
+    display: flex;
+    background: #5535c8;
+    padding-top: 5px;
+    border-radius: 15px;
+    padding-left: 50px;
+    padding-right: 0px;
+    align-content: center;
+}
+
+.chat-header .img1 img {
+    width: 40px;
+    height: auto;
+}
+
+.chat-header .img2 img {
+    width: 200px;
+    height: auto;
+    margin-left: 800px;
+}
+
+.chat-box {
+    background: #d7d5ff;
+    padding: 20px;
+    border-radius: 15px;
+    height: 350px;
+    overflow-y: auto;
+    text-align: left;
+}
+
+.chat-message {
+    padding: 10px 20px;
+    border-radius: 20px;
+    max-width: 70%;
+    font-size: 16px;
+    word-wrap: break-word;
+    white-space: pre-line;
+    /* Ensures line breaks are rendered */
+}
+
+.user {
+    background: #8263ff;
+    color: white;
+    text-align: right;
+    align-self: flex-end;
+    margin-left: auto;
+    /* Moves message to the right */
+    border-radius: 20px;
+    /* Adjust border radius */
+    font-family: 'Montserrat';
+    padding: 10px 10px;
+}
+
+.bot {
+    background: #f3f6fa;
+    color: #333;
+    text-align: left;
+    align-self: flex-start;
+    line-height: 1.5;
+    /* Increases spacing between lines */
+    font-family: 'Montserrat';
+    border-radius: 20px;
+    /* Adjust border radius */
+    padding: 10px 10px;
+}
+
+.chat-box {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.chat-input {
+    display: flex;
     margin-top: 10px;
-    margin-bottom: 10px;
-    resize: none;
-    border-radius: 2em;
-    background-color: #ff9cac;
-    color: black;
+    font-size: 14px;
+    font-family: 'Montserrat';
 }
 
-.button {
-    width:10%;
-    height: 3em;
+.chat-input input {
+    flex: 1;
+    padding: 15px;
+    border: none;
+    border-radius: 15px;
+    outline: none;
+    font-size: 14px;
+    font-family: 'Montserrat';
 }
 
+.chat-input button {
+    background: #ffc436;
+    border: none;
+    padding: 10px;
+    border-radius: 30px;
+    margin-left: -35px;
+    cursor: pointer;
+}
 
+.chat-input button img {
+    width: 25px;
+    margin-bottom: -3px;
+}
+
+.chat-input button:hover {
+    background: #8263ff;
+}
+
+/* Footer */
+footer {
+    background: #5535c8;
+    color: #f3f6fa;
+    text-align: center;
+    padding: 5px;
+    font-family: 'Montserrat';
+    font-size: 16px;
+    position: relative;
+    margin-top: -40px;
+    border-radius: 30px 30px 0px 0px;
+
+
+}
