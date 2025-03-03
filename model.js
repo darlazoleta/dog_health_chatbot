@@ -17,7 +17,7 @@ async function sendMessage() {
     document.getElementById("user-input").value = "";
 
     try {
-        let response = await fetch("http://127.0.0.1:5000/chat", {
+        let response = await fetch("https://doghealthchatbot-production.up.railway.app/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
