@@ -3,10 +3,10 @@ from flask_cors import CORS
 from cohere import Client
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for all routes
+CORS(app, resources={r"/chat": {"origins": "*"}})  # Enable CORS for all origins
 
 # Initialize Cohere Client
-co = Client('IMkbSoANcmONhqF7zhDhqr2LUlCdDxBnkLZbznyz')  # Replace with actual API key
+co = Client('YOUR_COHERE_API_KEY')  # Replace with actual API key
 
 # Cohere Model ID
 MODEL_ID = '126d7bb8-059e-449b-a041-e8c4877fd9bd-ft'
@@ -23,33 +23,33 @@ def classify_text(question):
         return None
 
 def is_irrelevant(question):
-    irrelevant_animals = ["cat", "rabbit", "bird", "hamster", "fish", "turtle", "parrot", "guinea pig", "ferret", "lizard", "snake", "mouse", "rat", "chinchilla", "horse", "goat", "sheep", "pig", "cow", "duck", "chicken", "frog", "gecko", "hedgehog", "alpaca"]
+    irrelevant_animals = ["cat", "rabbit", "bird", "hamster", "fish", "turtle", "parrot"]
     return any(animal in question.lower() for animal in irrelevant_animals)
 
 def ask_chatbot(user_id, question):
     if is_irrelevant(question):
         return "I can only assist with dog issues/concerns."
-    
+
     category = classify_text(question)
-    
+
     greetings = ["hello", "hi", "hey", "good morning", "good afternoon", "good evening"]
     polite_responses = ["thank you", "thanks", "alright"]
-    
+
     if any(word in question.lower() for word in greetings):
         return "Hello! How can I assist you with your dog's concerns?"
     elif any(word in question.lower() for word in polite_responses):
         return "You're welcome! Let me know if you need any help with your dog."
-    
+
     if category != "dog topic" and user_id not in user_context:
         return "I can only assist with dog issues/concerns."
-    
+
     if user_id not in user_context:
         user_context[user_id] = []
-    
+
     chat_history = user_context[user_id][-5:]
     formatted_chat_history = [{"role": "USER" if entry["role"].upper() == "USER" else "CHATBOT", "message": entry["message"]} for entry in chat_history]
     formatted_chat_history.append({"role": "USER", "message": question})
-    
+
     try:
         response = co.chat(
             model="command",
@@ -57,11 +57,11 @@ def ask_chatbot(user_id, question):
             chat_history=formatted_chat_history,
             temperature=0.7
         )
-        
+
         bot_reply = response.text.strip().replace("**", "")
         formatted_chat_history.append({"role": "CHATBOT", "message": bot_reply})
         user_context[user_id] = formatted_chat_history
-        
+
         return bot_reply
     except Exception as e:
         print(f"Chatbot API Error: {e}")
@@ -72,10 +72,10 @@ def chat():
     data = request.get_json()
     user_message = data.get("message", "").strip()
     user_id = data.get("user_id", "default")
-    
+
     if not user_message:
         return jsonify({"response": "Please enter a valid message."})
-    
+
     chatbot_response = ask_chatbot(user_id, user_message)
     return jsonify({"response": chatbot_response})
 
