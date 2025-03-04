@@ -23,7 +23,7 @@ def classify_text(question):
         return None
 
 def is_irrelevant(question):
-    irrelevant_animals = ["cat", "rabbit", "bird", "hamster", "fish", "turtle", "parrot", "guinea pig", "ferret", "lizard", "snake", "mouse", "rat", "chinchilla", "horse", "goat", "sheep", "pig", "cow", "duck", "chicken", "frog", "gecko", "hedgehog", "alpaca"]
+    irrelevant_animals = ["rabbit", "bird", "hamster", "fish", "turtle", "parrot", "guinea pig", "ferret", "lizard", "snake", "mouse", "rat", "chinchilla", "horse", "goat", "sheep", "pig", "cow", "duck", "chicken", "frog", "gecko", "hedgehog", "alpaca"]
     return any(animal in question.lower() for animal in irrelevant_animals)
 
 def ask_chatbot(user_id, question):
