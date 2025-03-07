@@ -85,3 +85,14 @@ document.getElementById("user-input").addEventListener("keydown", function (even
         sendMessage();
     }
 });
+
+document.addEventListener("scroll", function () {
+    const nav = document.querySelector("nav");
+    const aboutSection = document.querySelector("#chat");
+
+    if (window.scrollY >= aboutSection.offsetTop) {
+        nav.style.position = "absolute";
+    } else {
+        nav.style.position = "fixed";
+    }
+});
