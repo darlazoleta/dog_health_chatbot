@@ -277,7 +277,7 @@ nav img {
 
 /* Footer */
 footer {
-    color: #f3f6fa;
+    color: #5535c8;
     text-align: center;
     padding: 5px;
     font-family: 'Montserrat';
@@ -375,8 +375,8 @@ footer {
         width: 110%;
         padding: 15px;
         margin-bottom: 70px;
-        margin-top: 50px;
-        height: 90vh;
+        margin-top: 100px;
+        height: 87vh;
     }
 
     .chat-header {
@@ -399,7 +399,7 @@ footer {
     }
 
     .chat-box {
-        height: 500px;
+        height: 550px;
     }
 
 
