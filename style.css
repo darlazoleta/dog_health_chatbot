@@ -426,13 +426,8 @@ footer {
         padding: 12px;
     }
 
-    /* Footer */
     footer {
-        font-size: 14px;
-        padding: 5px;
-    }
+        display: none;
+    }    
 
-    footer p {
-        margin: 10px;
-    }
 }
