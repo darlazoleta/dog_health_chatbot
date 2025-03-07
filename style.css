@@ -301,7 +301,7 @@ footer {
 }
 
 /* General Mobile Optimization */
-@media (max-width: 768px) {
+@media (max-width: 800px) {
     body {
         font-size: 14px;
     }
@@ -312,7 +312,7 @@ footer {
 
     /* Navigation Bar */
     nav {
-        width: 72.3%;
+        width: 75.5%;
         position: fixed;
         transition: top 0.3s ease-in-out;
     }
@@ -335,9 +335,8 @@ footer {
     }
 
     #landing h1 {
-        font-family: 'Montserrat';
-        font-size: 32px;
-        margin-bottom: 5px;
+        font-family: Arial, Helvetica, sans-serif;
+        font-size: 48px;
         font-weight: 900;
     }
 
@@ -359,7 +358,7 @@ footer {
 
     .about-logo img {
         width: 80%;
-        margin-top: 50px;
+        margin-top: 250px;
     }
 
     .about-text p {
@@ -402,7 +401,7 @@ footer {
     }
 
     .chat-box {
-        height: 460px;
+        height: 600px;
     }
 
 
@@ -420,7 +419,7 @@ footer {
 
     .chat-input button {
         width: 70%;
-        margin-left: 45px;
+        margin-left: 60px;
         margin-top: 10px;
         margin-bottom: -225px;
         padding: 12px;
