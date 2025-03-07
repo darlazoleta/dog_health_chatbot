@@ -1,3 +1,16 @@
+document.addEventListener("DOMContentLoaded", function () {
+    var chatLog = document.getElementById("chat-log");
+
+    // Display initial bot message once when the page loads
+    let initialMessage = document.createElement("div");
+    initialMessage.classList.add("chat-message", "bot");
+    initialMessage.innerHTML = "Hello there! The responses will take a minute or less to load due to a FREE server plan hosting this site. Thank you for understanding.";
+    chatLog.appendChild(initialMessage);
+
+    // Auto-scroll
+    chatLog.scrollTop = chatLog.scrollHeight;
+});
+
 async function sendMessage() {
     var userInput = document.getElementById("user-input").value.trim();
     if (userInput === "") {
