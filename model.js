@@ -32,7 +32,7 @@ async function sendMessage() {
     // Add typing indicator
     let typingIndicator = document.createElement("div");
     typingIndicator.classList.add("chat-message", "typing");
-    typingIndicator.innerHTML = "<i>Chatbot is typing...</i>";
+    typingIndicator.innerHTML = "<i>Dogtor is typing...</i>";
     chatLog.appendChild(typingIndicator);
 
     // Auto-scroll
