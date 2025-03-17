@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     // Display initial bot message once when the page loads
     let initialMessage = document.createElement("div");
     initialMessage.classList.add("chat-message", "bot");
-    initialMessage.innerHTML = "Hello there! The responses will take a minute or less to load due to a FREE server plan hosting this site. Thank you for understanding.";
+    initialMessage.innerHTML = "Hello there! The responses will take a few minutes to load due to a FREE server plan hosting this site. Thank you for understanding.";
     chatLog.appendChild(initialMessage);
 
     // Auto-scroll
