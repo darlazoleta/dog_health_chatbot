@@ -1,18 +1,11 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const textarea = document.querySelector("textarea");
+// Wait for DOM to be fully loaded
+document.addEventListener('DOMContentLoaded', function () {
+    const userInput = document.getElementById('user-input');
 
-    function adjustHeight() {
-        textarea.style.height = "auto";
-        textarea.style.height = textarea.scrollHeight + "px";
+    if (userInput) {
+        userInput.addEventListener('input', function () {
+            this.style.height = 'auto';
+            this.style.height = this.scrollHeight + 'px';
+        });
     }
-
-    textarea.addEventListener("input", adjustHeight);
-    textarea.addEventListener("keydown", function (event) {
-        if (event.key === "Enter" && !event.shiftKey) {
-            event.preventDefault();
-            sendMessage();
-        }
-    });
-
-    adjustHeight();
 });

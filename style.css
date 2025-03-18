@@ -111,7 +111,7 @@ nav img {
     margin-bottom: -3px;
 }
 
-/* Other Sections just a comment*/
+/* Other Sections */
 
 #about {
     background-color: #ffc436;
@@ -401,7 +401,7 @@ footer {
     }
 
     .chat-box {
-        height: 500px;
+        height: 450px;
     }
 
 
@@ -425,9 +425,13 @@ footer {
         padding: 12px;
     }
 
-    /* Footer removed*/
+    /* Footer */
     footer {
-        display: none
+        font-size: 14px;
+        padding: 5px;
     }
 
+    footer p {
+        margin: 10px;
+    }
 }

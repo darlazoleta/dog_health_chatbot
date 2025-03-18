@@ -1,16 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-    var chatLog = document.getElementById("chat-log");
-
-    // Display initial bot message once when the page loads
-    let initialMessage = document.createElement("div");
-    initialMessage.classList.add("chat-message", "bot");
-    initialMessage.innerHTML = "Hello there! The responses will take a few minutes to load due to a FREE server plan hosting this site. Thank you for understanding.";
-    chatLog.appendChild(initialMessage);
-
-    // Auto-scroll
-    chatLog.scrollTop = chatLog.scrollHeight;
-});
-
 async function sendMessage() {
     var userInput = document.getElementById("user-input").value.trim();
     if (userInput === "") {
@@ -20,7 +7,7 @@ async function sendMessage() {
 
     var chatLog = document.getElementById("chat-log");
 
-    // Create and display the user message
+    // Create user message
     let userMessage = document.createElement("div");
     userMessage.classList.add("chat-message", "user");
     userMessage.innerHTML = `${userInput}`;
@@ -29,17 +16,13 @@ async function sendMessage() {
     // Clear input field
     document.getElementById("user-input").value = "";
 
-    // Add typing indicator
-    let typingIndicator = document.createElement("div");
-    typingIndicator.classList.add("chat-message", "typing");
-    typingIndicator.innerHTML = "<i>Dogtor is typing...</i>";
-    chatLog.appendChild(typingIndicator);
-
-    // Auto-scroll
-    chatLog.scrollTop = chatLog.scrollHeight;
+    // Create bot message container
+    let botMessage = document.createElement("div");
+    botMessage.classList.add("chat-message", "bot");
+    chatLog.appendChild(botMessage);
 
     try {
-        let response = await fetch("https://doggy-chatbot.onrender.com/chat", {
+        const response = await fetch("http://127.0.0.1:5000/chat", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json"
@@ -51,40 +34,66 @@ async function sendMessage() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        let data = await response.json();
-        let botResponse = data.response || "Sorry, an error occurred.";
+        // Check if it's a regular JSON response
+        const contentType = response.headers.get("content-type");
+        if (contentType && contentType.includes("application/json")) {
+            const data = await response.json();
+            botMessage.innerHTML = data.response || data.error;
+            return;
+        }
 
-        // Remove typing indicator before displaying bot response
-        typingIndicator.remove();
+        // Handle streaming response
+        let responseText = "";
+        const reader = response.body.getReader();
+        const decoder = new TextDecoder();
 
-        // Create and display bot message
-        let botMessage = document.createElement("div");
-        botMessage.classList.add("chat-message", "bot");
-        botMessage.innerHTML = `${botResponse.replace(/\n/g, "<br>")}`;
-        chatLog.appendChild(botMessage);
+        while (true) {
+            const { value, done } = await reader.read();
+            if (done) break;
 
-        // Auto-scroll
-        chatLog.scrollTop = chatLog.scrollHeight;
+            const chunk = decoder.decode(value);
+            const lines = chunk.split('\n');
+
+            for (const line of lines) {
+                if (line.startsWith('data: ')) {
+                    try {
+                        const data = JSON.parse(line.slice(6));
+                        if (data.error) {
+                            botMessage.innerHTML = `Error: ${data.error}`;
+                            console.error("Bot error:", data.error);
+                            break;
+                        }
+                        if (data.chunk) {
+                            responseText += data.chunk;
+                            botMessage.innerHTML = responseText.replace(/\n/g, "<br>");
+                            chatLog.scrollTop = chatLog.scrollHeight;
+                        }
+                    } catch (e) {
+                        console.error("Parse error:", e, "Line:", line);
+                    }
+                }
+            }
+        }
+
+        if (!responseText) {
+            botMessage.innerHTML = "Sorry, I couldn't generate a response. Please try again.";
+        }
+
     } catch (error) {
-        console.error("Error in fetching data:", error);
-        
-        // Remove typing indicator before showing error
-        typingIndicator.remove();
-        
-        let errorMessage = document.createElement("div");
-        errorMessage.classList.add("chat-message", "bot");
-        errorMessage.innerHTML = "Sorry, an error occurred.";
-        chatLog.appendChild(errorMessage);
+        console.error("Network error:", error);
+        botMessage.innerHTML = "Sorry, an error occurred. Please try again.";
     }
+
+    chatLog.scrollTop = chatLog.scrollHeight;
 }
 
-// Handle Enter key press
 document.getElementById("user-input").addEventListener("keydown", function (event) {
     if (event.key === "Enter" && !event.shiftKey) {
         event.preventDefault();
         sendMessage();
     }
 });
+
 
 document.addEventListener("scroll", function () {
     const nav = document.querySelector("nav");
@@ -95,4 +104,17 @@ document.addEventListener("scroll", function () {
     } else {
         nav.style.position = "fixed";
     }
+});
+
+document.addEventListener("DOMContentLoaded", function () {
+    var chatLog = document.getElementById("chat-log");
+
+    // Display initial bot message once when the page loads
+    let initialMessage = document.createElement("div");
+    initialMessage.classList.add("chat-message", "bot");
+    initialMessage.innerHTML = "Hello there! The responses will take a minute or less to load due to a FREE server plan hosting this site. Thank you for understanding.";
+    chatLog.appendChild(initialMessage);
+
+    // Auto-scroll
+    chatLog.scrollTop = chatLog.scrollHeight;
 });
